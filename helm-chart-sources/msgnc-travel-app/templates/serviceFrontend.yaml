@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-frontend
+  labels:
+    app: {{ include "helm-chart.name" . }}-frontend
+    chart: {{ include "helm-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- if .Values.istio.enabled -}}
+    auth.istio.io/30080: NONE
+    {{- end }}
+spec:
+  type: {{ .Values.frontend.type }}
+  ports:
+    - port: {{ .Values.frontend.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "helm-chart.name" . }}-frontend
+    release: {{ .Release.Name }}

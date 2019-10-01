@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "helm-chart.fullname" . }}-backend
+  labels:
+    app: {{ include "helm-chart.name" . }}-backend
+    chart: {{ include "helm-chart.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "helm-chart.name" . }}-backend
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "helm-chart.name" . }}-backend
+        release: {{ .Release.Name }}
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.backend.image}}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.deployment.backend.containerPort }}
+            protocol: TCP
+#        livenessProbe:
+#          httpGet:
+#            path: /status/alive
+#            port: {{ .Values.deployment.containerPort }}
+#          initialDelaySeconds: 10
+#          periodSeconds: 3
+        resources:
+{{ toYaml .Values.backend.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
