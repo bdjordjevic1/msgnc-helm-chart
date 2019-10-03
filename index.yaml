@@ -3,11 +3,11 @@ entries:
   msgnc-travel-app:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-10-01T13:42:01.110791775+02:00
+    created: 2019-10-03T08:45:49.895854752+02:00
     description: A Helm chart for Kubernetes
     digest: 385a7613dd684d7467a1be8a9dd3d19c40e83c59c3b827327cd374ae5cd0a57e
     name: msgnc-travel-app
     urls:
-    - https://bdjordjevic1.github.io/msgnc-helm-chart/helm-chart-sources/msgnc-travel-app-1.0.0.tgz
+    - helm-chart-sources/msgnc-travel-app-1.0.0.tgz
     version: 1.0.0
-generated: 2019-10-01T13:42:01.11040064+02:00
+generated: 2019-10-03T08:45:49.895248739+02:00
